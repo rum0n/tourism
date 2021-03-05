@@ -1,0 +1,17 @@
+.navbar-light .navbar-nav .nav-link {
+    color: rgb(255, 255, 255);
+}
+.navbar-primary {
+    background-color: #1a77f7;
+}
+.container {
+    max-width: 1231px;
+}
+
+.modal_button {
+    margin-left: 589px;
+}
+
+#example1_info {
+    display: none;
+}
