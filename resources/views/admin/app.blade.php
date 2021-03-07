@@ -31,7 +31,8 @@
 
     <link href="{{ asset('admin/assets/css') }}/style.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css') }}/toastr.min.css">
+
     @stack('css')
 
 </head>
@@ -93,9 +94,10 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('admin/dist')}}/js/demo.js"></script>
 
-<script src="https://unpkg.com/sweetalert2@7.19.1/dist/sweetalert2.all.js"></script>
+<script src="{{asset('assets/js')}}/sweetalert2.all.js"></script>
 
-<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<script src="{{asset('assets/js')}}/toastr.min.js"></script>
+
 {!! Toastr::message() !!}
 
 <script>

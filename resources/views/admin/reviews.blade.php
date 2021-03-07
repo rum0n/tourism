@@ -47,7 +47,12 @@
                                 <td>{{ $x->review }}</td>
                                 {{--<td>{{ $x->created_at }}</td>--}}
                                 <td>
-                                    <a href="#" class="btn btn-danger btn-xs ml-1" title="See details">Delete</a>
+
+                                    <button onclick="deleteReview({{ $x->id }})" type="submit" class="btn btn-danger btn-sm ml-3">Delete</button>
+                                    <form id="delete-review-{{ $x->id }}" action="{{ route('admin.delete.review',$x->id) }}" method="post">
+                                        @csrf
+                                    </form>
+
                                 </td>
 
                             </tr>
@@ -82,5 +87,38 @@
         });
     </script>
 
+    <!--script for this pages-->
+    <script type="text/javascript">
+        function deleteReview(id) {
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger mr-2',
+                buttonsStyling: true,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                event.preventDefault();
+                document.getElementById('delete-review-'+id).submit();
+            } else if (
+                    // Read more about handling dismissals
+            result.dismiss === swal.DismissReason.cancel
+            ) {
+                swal(
+                        'Cancelled',
+                        'Your data is safe :)',
+                        'error'
+                )
+            }
+        })
+        }
+    </script>
 
     @endpush

@@ -19,10 +19,10 @@
                 <div class="Navigation-right Navigation-guestButtons ng-scope">
 
                     <div class="Navigation-item Navigation-envelope navigation-links" style="width:auto;padding-top:0px;">
-                        <div class="navigation-span"><a href="{{ route('home_page') }}">Home</a></div>
+                        <div class="navigation-span"><a class="{{ Request::is('/') ? 'active' : '' }}" href="{{ route('home_page') }}">Home</a></div>
                     </div>
                     <div class="Navigation-item Navigation-envelope navigation-links" style="width:auto;padding-top:0px;">
-                        <div class="navigation-span"><a href="{{ route('bookings') }}">Bookings</a></div>
+                        <div class="navigation-span"><a class="{{ Request::is('bookings') ? 'active' : '' }}" href="{{ route('bookings') }}">Bookings</a></div>
                     </div>
 
                     @guest
@@ -37,14 +37,21 @@
 
                     @auth
                     <div class="Navigation-item Navigation-dropdownButton" id="nav1">
-                        <img class="ng-isolate-scope" src="{{ asset('img/2.jpg') }}">
+                        <img class="ng-isolate-scope" src="{{ asset('profile/picture/'.Auth::user()->pro_pic) }}">
                         <span  class="ng-binding">{{ Auth::user()->name }}</span>
 
                         <div class="Navigation-dropdown" id="bar">
                             <ul>
                                 @if(Auth::user()->role_id != 1)
                                     <li ><a  href="{{ route('local',Auth::user()->id) }}">View profile</a></li>
-                                    <li ><a  href="#">Edit profile</a></li>
+
+                                    <li >
+                                        @if(Auth::user()->role_id == 2)
+                                            <a  href="{{ route('guide.edit.profile',Auth::user()->id) }}">Edit profile</a>
+                                        @elseif(Auth::user()->role_id == 3)
+                                            <a  href="{{ route('user.edit.profile',Auth::user()->id) }}">Edit profile</a>
+                                        @endif
+                                    </li>
                                 @endif
 
                                 @if(Auth::user()->role_id == 1)

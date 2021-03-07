@@ -190,3 +190,14 @@
 	height: 250px;
 	margin-bottom: 0px;
 }
+
+.Form input[type="file"] {
+	font-size: 18px;
+}
+.JoinForm-submit {
+	margin-top: 60px;
+}
+
+.active {
+	color: #ff8300;
+}

@@ -122,7 +122,7 @@
 
                     <div class="GuideProfile-carousel">
                         {{--<img class="ng-scope ng-isolate-scope" src="{{ asset('/',$local->motto) }}" >--}}
-                        <img class="ng-scope ng-isolate-scope" src="/img/profile1.jpg" >
+                        <img class="ng-scope ng-isolate-scope" src="{{ asset('profile/picture/'.Auth::user()->pro_pic) }}" >
                     </div>
                 </div>
             </div>
@@ -134,7 +134,13 @@
             <div class="GuideProfile-actions ng-scope">
                 <div class="GuideProfile-actions-reviewCount">
                     <p class="Rating--large Rating ng-isolate-scope">
-                        @if($rating= $reviews->avg('rating')==0)
+
+                        <?php
+                            $reviews = \App\Review::where('profile_id',$local->id)->get();
+                            $rating = round($reviews->avg('rating'));
+                        ?>
+
+                        @if($rating==0)
                             <i class="fa fa-star ng-scope"></i>
                             <i class="fa fa-star ng-scope"></i>
                             <i class="fa fa-star ng-scope"></i>
@@ -171,8 +177,9 @@
                             <i class="fa fa-star ng-scope is-highlighted"></i>
                             <i class="fa fa-star ng-scope is-highlighted"></i>
                         @endif
+
                     </p>
-                    <p class="ng-binding ng-scope">Reviews: <strong class="ng-binding">{{count($reviews)}}</strong></p>
+                    <p class="ng-binding ng-scope">Reviews : <strong class="ng-binding">{{count($reviews)}}</strong></p>
 
                 </div>
                 <div class="GuideProfile-actions-content">
@@ -180,21 +187,32 @@
                         <div class="GuideProfile-actions-buttons ng-scope ng-isolate-scope">
                             @auth
                             @if($local->id == Auth::user()->id)
-                                <a href="#" class="Button Button--blue Button--fullWidth Button--large-tablet">
-                                    Edit profile
-                                </a>
-                            @else
-                            <div class="GuideProfile-actions-button GuideProfile-actions-button--wide GuideProfile-actions-button-double ng-scope">
-                                <div class="GuideProfile-actions-button-label">
-                                    Create a trip with <strong class="ng-binding">{{ $local->name }}</strong>
-                                </div>
 
-                                <a href="{{ route('user.create_trip',$local->id) }}" class="Button Button--blue Button--fullWidth Button--large-tablet">
-                                    Create a Trip
-                                </a>
-                            </div>
+                                @if(Auth::user()->role_id == 2)
+                                    <a href="{{ route('guide.edit.profile',Auth::user()->id) }}" class="Button Button--blue Button--fullWidth Button--large-tablet">
+                                        Edit profile
+                                    </a>
+                                @elseif(Auth::user()->role_id == 3)
+                                    <a href="{{ route('user.edit.profile',Auth::user()->id) }}" class="Button Button--blue Button--fullWidth Button--large-tablet">
+                                        Edit profile
+                                    </a>
+                                @endif
+
+                            @else
+                                @if(Auth::user()->role_id == 3)
+                                    <div class="GuideProfile-actions-button GuideProfile-actions-button--wide GuideProfile-actions-button-double ng-scope">
+                                        <div class="GuideProfile-actions-button-label">
+                                            Create a trip with <strong class="ng-binding">{{ $local->name }}</strong>
+                                        </div>
+
+                                        <a href="{{ route('user.create_trip',$local->id) }}" class="Button Button--blue Button--fullWidth Button--large-tablet">
+                                            Create a Trip
+                                        </a>
+                                    </div>
+                                @endif
                             @endif
                             @endauth
+
                         </div>
 
                     </div><!-- end ngIf: ctrl.shareAvailable -->
@@ -214,14 +232,6 @@
                     <h1 class="ng-binding">Explore {{str_limit($local->location,50) }} with {{$local->name}}</h1></div>
                 @endif
 
-            <div class="GuideProfile-info-row">
-                <div class="col-md-4-7">
-                    <h2>Languages</h2>
-                </div>
-                <div class="col-md-7-3">
-                    <p>English</p>
-                </div>
-            </div>
 
             <div class="GuideProfile-info-row ng-scope">
                 <div class="col-md-4-7">
@@ -230,6 +240,17 @@
                 <div class="col-md-7-3">
                     <div>
                         <p class="Overflow-expandableText ng-binding">{{ $local->email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="GuideProfile-info-row ng-scope">
+                <div class="col-md-4-7">
+                    <h2>Phone</h2>
+                </div>
+                <div class="col-md-7-3">
+                    <div>
+                        <p class="Overflow-expandableText ng-binding">{{ $local->phone }}</p>
                     </div>
                 </div>
             </div>
@@ -266,7 +287,7 @@
     <div class="GuideProfile-container">
 
         @auth
-        @if($local->id != Auth::user()->id)
+        @if($local->id != Auth::user()->id && Auth::user()->role_id != 1)
 
         <!--Report form-->
         <br>
@@ -331,10 +352,10 @@
                                 <p class="Review-name">
 						        <span>
 						          <a href="#"><strong class="ng-binding">{{$review->user->name}}</strong></a>
-						          <span class="Review-type ng-binding">as a traveller</span>
+						          <span class="Review-type ng-binding">as a {{$review->user->role->name}}</span>
 						        </span>
                                 </p>
-                                <p class="Review-date ng-binding">{{$review->created_at}}</p>
+                                <p class="Review-date ng-binding">{{ $review->created_at->diffForHumans()}}</p>
                             </div>
                         </div>
 

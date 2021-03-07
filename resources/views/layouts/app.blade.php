@@ -16,14 +16,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/bootstrap.min.css"/>
 
     <!-- ================For Datepicker=============== -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('assets/css') }}/jquery-ui.css">
 
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css') }}/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css') }}/app.css">
     <link rel="stylesheet" href="{{ asset('assets/css') }}/custom.css">
-
 
     @stack('css')
 
@@ -70,16 +69,16 @@
 </ul>
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="{{asset('assets/js')}}/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="{{asset('assets/js')}}/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="{{asset('assets/js')}}/bootstrap-v4.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <!-- jQuery -->
 <script src="{{asset('admin/plugins')}}/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 
-<script src="https://unpkg.com/sweetalert2@7.19.1/dist/sweetalert2.all.js"></script>
-<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<script src="{{asset('assets/js')}}/sweetalert2.all.js"></script>
+<script src="{{asset('assets/js')}}/toastr.min.js"></script>
 {!! Toastr::message() !!}
 
 <script>
@@ -118,8 +117,8 @@
 
 <!-- =====================For date Picker======================== -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+<script src="{{asset('assets/js')}}/jquery.min.js"></script>
+<script src="{{asset('assets/js')}}/jquery-ui.min.js"></script>
 
 
 @stack('js')

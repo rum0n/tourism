@@ -46,8 +46,12 @@ Route::post('/report/{id}', 'FrontController@report')->name('report_user');
 Route::group(['as' => 'admin.','prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['auth','admin']],function(){
 
     Route::get('/dashboard', 'AdminController@index')->name('dashboard');
+
     Route::get('/reviews', 'AdminController@reviews')->name('reviews');
+    Route::post('/delete/review/{id}', 'AdminController@delete_review')->name('delete.review');
+
     Route::get('/reports', 'AdminController@reports')->name('reports');
+    Route::post('/delete/report/{id}', 'AdminController@delete_report')->name('delete.report');
 
     //    ===========User Control Routes======================
     Route::resource('/users', 'UserController');
@@ -71,6 +75,10 @@ Route::group(['as' => 'admin.','prefix' => 'admin', 'namespace' => 'Admin','midd
 Route::group(['as' => 'guide.','prefix' => 'guide', 'namespace' => 'Guide','middleware' => ['auth','guide','verified']],function(){
 
     Route::get('/dashboard', 'GuideController@index')->name('dashboard');
+
+    Route::get('/edit/profile/{id}', 'GuideController@editProfile')->name('edit.profile');
+    Route::post('/update/profile/{id}', 'GuideController@updateProfile')->name('update.profile');
+
     Route::get('/booking/approve/{id}', 'GuideController@approve')->name('approve');
     Route::get('/booking/reject/{id}', 'GuideController@reject')->name('reject');
 });
@@ -91,6 +99,9 @@ Route::group(['as' => 'guide.','prefix' => 'guide', 'namespace' => 'Guide','midd
 Route::group(['as' => 'user.','prefix' => 'user', 'namespace' => 'User','middleware' => ['auth','user','verified']],function(){
 
     Route::get('/dashboard', 'UserController@index')->name('dashboard');
+
+    Route::get('/edit/profile/{id}', 'UserController@editProfile')->name('edit.profile');
+    Route::post('/update/profile/{id}', 'UserController@updateProfile')->name('update.profile');
 
 
     Route::get('/create/trips/{id}', 'UserController@trips')->name('create_trip');

@@ -12,7 +12,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('user/proPic/'.Auth::user()->pro_pic) }}" alt="Profile Picture"/>
+                <img src="{{ asset('profile/picture/'.Auth::user()->pro_pic) }}" alt="Profile Picture"/>
 
             </div>
             <div class="info">

@@ -60,7 +60,7 @@
                                           </form>
                                       </span>
                                   @elseif($trip->status == 'Confirmed')
-                                      <span class="MyTrip-deactivate btn btn-sm btn-success" title="You have accepted this">Booked</span>
+                                      <span class="MyTrip-deactivate btn btn-sm btn-success" title="You have accepted this">You accepted</span>
                                   @else
                                       <span class="MyTrip-deactivate btn btn-sm btn-danger" title="You have rejected this">Rejected</span>
                                   @endif

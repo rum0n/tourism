@@ -49,7 +49,15 @@
                                 <td>{{ $x->date }}</td>
                                 <td>{{ str_limit($x->location,30) }}</td>
                                 {{--<td><span>{{ $x->status }}</span></td>--}}
-                                <td><span class="MyTrip-deactivate btn btn-xs btn-{{($x->status=='Confirmed')?'success':'warning'}}">{{ $x->status }}</span></td>
+                                <td>
+                                    @if($x->status=='Confirmed')
+                                        <span class="MyTrip-deactivate btn btn-xs btn-success">{{ $x->status }}</span>
+                                    @elseif($x->status=='Pending')
+                                        <span class="MyTrip-deactivate btn btn-xs btn-warning">{{ $x->status }}</span>
+                                    @else
+                                        <span class="MyTrip-deactivate btn btn-xs btn-danger">{{ $x->status }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="#" class="btn btn-success btn-xs ml-1" title="See details"><i class="fa fa-eye"></i></a>
                                 </td>

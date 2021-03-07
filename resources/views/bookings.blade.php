@@ -38,7 +38,10 @@
                                     <div class="RecentBooking">
                                         <span class="RecentBooking-price ng-binding"><strong><sup>$</sup>{{ \App\User::find($booking->local_id)->price }}</strong>/h</span>
 
-                                        <a href="#"><div class="RecentBooking-content">
+                                        <?php
+                                        $guide = \App\User::find($booking->local_id);
+                                        ?>
+                                        <a href="{{ route('local',$guide->id) }}"><div class="RecentBooking-content">
 
                                                 {{--<div class="RecentBooking-city lazyload" style="background-image: image({{ asset('img/.jpg') }}})"></div>--}}
 
@@ -47,28 +50,41 @@
                                                 <div class="RecentBooking-overlay">
                                                     <img class="RecentBooking-photo" src="{{ asset('img/2.jpg') }}">
                                                     <div class="RecentBooking-info">
-                                                        <span class="u-boldText ng-binding">{{ \App\User::find($booking-> traveller_number)->name }}</span> booked a tour with
-                                                        <span class="u-boldText ng-binding">{{ \App\User::find($booking->local_id)->name }}</span>
+                                                        <span class="u-boldText ng-binding">{{ \App\User::find($booking-> traveller_id)->name }}</span> booked a tour with
+                                                        <span class="u-boldText ng-binding">{{ $guide->name }}</span>
                                                         <p>in <span class="RecentBooking-location ng-binding">{{ str_limit($booking->location,15) }}</span></p>
                                                     </div>
                                                 </div>
                                                 <div class="Intro-bGradient"></div>
                                             </div></a>
 
+                                        <?php
+                                        $traveller=\App\User::find($booking->traveller_id);
+                                        $reviews = \App\Review::where('profile_id',$booking->local_id)->get();
+                                        $rating= round($reviews->avg('rating'));
+                                        ?>
+
                                         <div class="RecentBooking-review">
-                                            <a href="#locals/mohamad-6th-of-october-city-egypt-10126630">
+                                            <a href="{{ route('local',$traveller->id)}}">
                                                 <div class="RecentBooking-guest">
                                                     <img size="mini" class="ng-isolate-scope lazyload" src="{{ asset('img/2.jpg') }}">
-                                                    <p class="ng-binding">{{ \App\User::find($booking-> traveller_number)->name }}</p>
+                                                    <p class="ng-binding">{{ $traveller->name }}</p>
                                                 </div>
                                             </a>
-                                            <p class="RecentBooking-reviewContent ng-binding">I’d rather say it short, it’s hard to make a friend from the first meeting, sound like i got one yesterday.
-                                                I felt sad when the day has ended (really) I was hoping it wouldn't.
-                                                Thank u Rania</p>
+                                            <p class="RecentBooking-reviewContent ng-binding">
+                                                {{$traveller->about}}
+                                                {{--I’d rather say it short, it’s hard to make a friend from the first meeting, sound like i got one yesterday.--}}
+                                                {{--I felt sad when the day has ended (really) I was hoping it wouldn't.--}}
+                                                {{--Thank u Rania--}}
+                                            </p>
                                             <div class="RecentBooking-rating">
                                                 <p class="Rating--small Rating ng-isolate-scope" rating="booking.review.rating"><!-- ngRepeat: star in ::stars -->
-                                                    <?php $reviews = \App\Review::where('profile_id',$booking->local_id)->get(); ?>
-                                                    @if($rating= $reviews->avg('rating')==0)
+                                                    {{--@php $rating = \App\Review::where('profile_id',$booking->local_id)->get(); @endphp--}}
+                                                    <?php
+                                                    $reviews = \App\Review::where('profile_id',$booking->local_id)->get();
+                                                    $rating= round($reviews->avg('rating'));
+                                                    ?>
+                                                    @if($rating== 0)
                                                         <i class="fa fa-star ng-scope"></i>
                                                         <i class="fa fa-star ng-scope"></i>
                                                         <i class="fa fa-star ng-scope"></i>
@@ -109,7 +125,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- end recentBookings.list -->
+                                </div>
+                                <!-- end recentBookings.list -->
                             @endforeach
                         </div>
 

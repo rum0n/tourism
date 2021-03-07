@@ -17,17 +17,28 @@
                 <div class="col-md-10 offset-md-1">
                     <div class="content-panel">
                         <div class="col-md-4 offset-md-4 mb-5 mt-5">
-                            <img src="{{ asset('user/proPic/'.$user->pro_pic) }}" alt="" class="img img-responsive img-thumbnail" width="300">
+                            <img src="{{ asset('profile/picture/'.$user->pro_pic) }}" alt="" class="img img-responsive img-thumbnail" width="300">
                         </div>
                         <table class="table table-striped table-advance table-hover">
                             <tr>
                                 <th>Name</th><td>{{ $user->name }}</td>
                             </tr>
-                            {{--<tr>--}}
-                                {{--<th>Username</th><td>{{ $user->username }}</td>--}}
-                            {{--</tr>--}}
+
                             <tr>
                                 <th>Email</th><td>{{ $user->email }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Phone</th><td>{{ $user->phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th><td>{{ $user->location }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fee $(per hour)</th><td>{{ $user->price }}</td>
+                            </tr>
+                            <tr>
+                                <th>Motto</th><td>{{ $user->motto }}</td>
                             </tr>
 
                             <tr>

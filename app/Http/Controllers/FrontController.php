@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
+use App\Notifications\ReportNotification;
+use App\Notifications\ReviewNotification;
 use App\Report;
 use App\Review;
 use App\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class FrontController extends Controller
 {
@@ -19,7 +22,7 @@ class FrontController extends Controller
                         ->where('email_verified_at','!=','')
                         ->paginate(4);
 
-        $recent_bookings = Booking::latest()->paginate(6);
+        $recent_bookings = Booking::latest()->paginate(3);
 
 
         return view('welcome', compact('local_guides','recent_bookings'));
@@ -87,6 +90,11 @@ class FrontController extends Controller
         $new_review->review = $request->review;
         $new_review->save();
 
+        $toUser = User::find($profile_id);
+        $fromUser = User::find($user_id);
+
+        Notification::send($toUser, new ReviewNotification($fromUser));
+
         Toastr::success('Successfully Added !' ,'Review');
         return redirect()->back();
     }
@@ -106,6 +114,20 @@ class FrontController extends Controller
         $new_report->report = $request->report;
 
         $new_report->save();
+
+        $reportedTo = User::find($profile_id);
+        $fromUser = User::find($reporter_id);
+        $toAdmins = User::where('role_id',1)->get();
+
+        if(count($toAdmins) > 0)
+        {
+            foreach($toAdmins as $admin)
+            {
+                Notification::send($admin, new ReportNotification($fromUser,$reportedTo));
+            }
+
+        }
+
 
         Toastr::success('Report send to admin !' ,'Done!');
         return redirect()->back();

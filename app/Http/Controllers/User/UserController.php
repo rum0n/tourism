@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\User;
 
 use App\Booking;
+use App\Notifications\BookingNotification;
+use App\Role;
 use App\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -16,7 +20,7 @@ class UserController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $my_trips = Booking::where('traveller_id',$user_id)->get();
+        $my_trips = Booking::where('traveller_id',$user_id)->latest()->get();
 
         return view('user.dashboard',compact('my_trips'));
     }
@@ -46,8 +50,8 @@ class UserController extends Controller
     {
         $this->validate($request,[
             'date'=>'required',
-
         ]);
+
         $traveller_id = Auth::user()->id;
         $traveller_booked = Booking::where('traveller_id', $traveller_id)
                             ->where('date',$request->date)
@@ -69,13 +73,19 @@ class UserController extends Controller
 
         $booking->save();
 
+        $fromUser = User::find($traveller_id);
+        $toUser = User::find($local_id);
+
+        Notification::send($toUser, new BookingNotification($fromUser));
+
+
         Toastr::success('Successfully Added !' ,'Trip');
-        return redirect()->back();
+        return redirect()->route('user.dashboard');
     }
+
 
     public function destroy($booking_id)
     {
-//        dd($booking_id);
 
         $trip = Booking::find($booking_id);
         $trip->delete();
@@ -83,6 +93,64 @@ class UserController extends Controller
         Toastr::success('Successfully deleted !' ,'Trip');
         return redirect()->back();
     }
+
+    public function editProfile($id)
+    {
+        $user = User::find($id);
+        $user_type = Role::where('id','>',1)->get();
+
+        return view('user.edit_profile',compact('user','user_type'));
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $this->validate($request,[
+            'name'=>'required',
+            'email'=>'required',
+            'user_type'=>'required',
+            'location'=>'required',
+            'phone'=>'numeric',
+            'pro_pic' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user = User::find($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role_id = $request->user_type;
+        $user->phone = $request->phone;
+        $user->price = $request->price;
+        $user->motto = $request->motto;
+        $user->about = $request->about;
+        $user->location = $request->location;
+
+        if($request->hasFile('pro_pic')){
+
+
+            $pic = $request->file('pro_pic');
+            $file_name = $request->name.$id.'.'.$pic->getClientOriginalExtension();
+
+            if($user->pro_pic=='default.png'){
+                $user->pro_pic = $file_name;
+            }
+            else{
+                $path = public_path('profile/picture/'.$user->pro_pic);
+                unlink($path);
+
+                $user->pro_pic = $file_name;
+            }
+//            $destination = public_path('profile/picture/');
+//            $pic->move($destination, $file_name);
+
+            Image::make($pic)->resize(300,300)->save(public_path('profile/picture/'.$file_name));
+        }
+
+        $user->save();
+
+        Toastr::success('Successfully Updated !' ,'Profile');
+        return redirect()->route('user.dashboard');
+    }
+
 
 
 }

@@ -165,7 +165,6 @@
 
 @push('js')
 
-
     <!-- ============For date Picker=============== -->
     <script>
         $(function() {
@@ -178,40 +177,11 @@
     </script>
     <!-- ============End of date Picker =============== -->
 
-
-<script>
-
-    $("#show-more").click(function() {
-        $("#show-more").hide();
-        $("#loading").show();
-
-        $div = $($(this).data('div')); //div to append
-        $link = $(this).data('link'); //current URL
-        $last_page = $(this).data('last'); //last page number
-
-
-        $page = $(this).data('page'); //get the next page #
-        $href = $link + $page; //complete URL
-
-        $.get($href, function(response) { //append data
-
-            $("#loading").hide();
-//            $(".see-more").show();
-
-            $html = $(response).find("#locals").html();
-            $div.append($html);
-
-            $("#show-more").show();
-
-            if ($last_page == parseInt($page)){
-                $("#show-more").hide();
-            }
-        });
-
-        $(this).data('page', (parseInt($page) + 1)); //update page #
-
-    });
-</script>
+    <!--------Js for google map---------->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYG5g2aJ9TjMlbYk7E_VuFYKSvHC1Ee6Y&libraries=places" type="text/javascript"></script>
+    <script>
+        var searchBox = new google.maps.places.SearchBox(document.getElementById('location'));
+    </script>
 
 
 @endpush

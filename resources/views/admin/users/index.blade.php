@@ -42,14 +42,9 @@
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ $x->name }}</td>
-                                     {{--<td>{{ $x->username }}</td>--}}
                                     <td>{{ $x->email }}</td>
                                     <td>
-                                        @if(!$x->pro_pic)
-                                            <p>No image</p>
-                                        @else
-                                            <img src="{{ asset('user/proPic/'.$x->pro_pic) }}" class="img-responsive img-thumbnail" width="100">
-                                        @endif
+                                        <img src="{{ asset('profile/picture/'.$x->pro_pic) }}" class="img-responsive img-thumbnail" width="100">
                                     </td>
 
                                     <td>
